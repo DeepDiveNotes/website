@@ -31,7 +31,7 @@ impl AppState {
 }
 
 fn main() -> Result<(), Error> {
-    ::std::env::set_var("RUST_LOG", "actix_web=info");
+    ::std::env::set_var("RUST_LOG", "actix_web=warn");
     env_logger::init();
 
     let seasons =
@@ -47,6 +47,7 @@ fn main() -> Result<(), Error> {
                 r.method(http::Method::GET).f(episode)
             })
             .resource("/search", |r|r.f(search))
+            .resource("/search/json", |r| r.f(search_json))
             .handler(
                 "/static",
                 fs::StaticFiles::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static")).unwrap(),
@@ -179,4 +180,23 @@ fn search(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error> {
     let body = state.template.render("search_result.html", &ctx).map_err(|err| error::ErrorInternalServerError(format!("{:?}", err)))?;
 
     Ok(HttpResponse::Ok().content_type("text/html").body(body))
+}
+
+fn search_json(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error> {
+    use crate::deep_dive::search::Search;
+
+    let state = req.state();
+
+    let results = if let Some(query) = req.query().get("q") {
+        let regex = regex::RegexBuilder::new(query).case_insensitive(true).build().map_err(|err| error::ErrorInternalServerError(format!("regex error {:?}", err)))?;
+
+        state.seasons.search(&regex).unwrap()
+
+    } else {
+        Vec::new()
+    };
+
+    let results_json = serde_json::to_string(&results).map_err(|err| error::ErrorInternalServerError(format!("Could not serialize search results to json: {:?}", err)))?;
+
+    Ok(HttpResponse::Ok().content_type("text/json").body(results_json))
 }

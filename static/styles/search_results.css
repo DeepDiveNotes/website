@@ -49,7 +49,19 @@ form {
     margin-left: 20px;
 }
 
+#notes li:nth-child(even) {
+    background-color: #424248;
+}
+
+#notes li:nth-child(odd) {
+    background-color: #161515;
+}
+
 .note {
-    border-bottom: 1px solid gray;
-    padding: 2px;
+    padding: 5px;
+}
+
+.highlight {
+    background-color: #8B3D23;;
+    font-weight: bold;
 }
