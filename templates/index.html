@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
+<form action="/search">
+    <input id="search_text" type="text" name="q" />
+    <input id="search_submit" type="submit" value="search" name="search"/>
+</form>
 Seasons:
     <ul>
         {% for season in seasons %}

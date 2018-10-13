@@ -11,9 +11,14 @@ ul {
 
 #video_timestamp {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 20px;
+    right: 20%;
+    width: 100px;
+    background-color: black;
     color: white;
+    cursor: hand;
+    font-size: 20px;
+    resize: none;
 }
 
 #notes {

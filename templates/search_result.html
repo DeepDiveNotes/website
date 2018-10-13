@@ -1,0 +1,37 @@
+<html>
+<head>
+    <title>Search results</title>
+    <link href="/static/styles/search_results.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="<player div ID>"></div>
+
+<form action="/search">
+    <input id="search_text" type="text" name="q" />
+    <input id="search_submit" type="submit" value="search" name="search"/>
+</form>
+<ul id="seasons">
+    {% for season in results %}
+        <li class="season">
+            <h1><a href="/season/{{season.id}}">{{ season.title }}</a></h1>
+
+            <ul id="episodes">
+                {% for episode in season.episode_results %}
+                    <li class="episode">
+                        <h1><a href="/season/{{ season.id }}/episode/{{ episode.id }}">{{ episode.title }}</a></h1>
+
+                        <ul id="notes">
+                            {% for note in episode.note_results %}
+                                <li class="note">
+                                    <a href="/season/{{season.id}}/episode/{{episode.id}}?t={{note.timestamp}}">{{ note.description }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

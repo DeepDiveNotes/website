@@ -1,6 +1,6 @@
-<h1> {{ season.name }} </h1>
+<h1> {{ season.title }} </h1>
 
 {% for episode in season.episodes %}
-<li><a href="/season/{{ season.id }}/episode/{{ video.id }}">{{ episode.title }}</a></li>
+<li><a href="/season/{{ season.id }}/episode/{{ episode.id }}">{{ episode.title }}</a></li>
 {% endfor %}
 

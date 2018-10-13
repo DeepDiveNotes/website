@@ -8,7 +8,7 @@ var current_note_index;
  * Initialize twitch player to play a video
  * @param video_id twitch video id
  */
-function ini_twitch_player(video_id) {
+function ini_twitch_player(video_id, initial_time) {
     notes = document.getElementById("notes").children[0];
     console.log("Playing video " + video_id);
     var options = {
@@ -18,10 +18,16 @@ function ini_twitch_player(video_id) {
     };
 
     player = new Twitch.Player("<player div ID>", options);
-    player.setVolume(0.5);
 
     // Once the player is set, we want to refresh the timestamp every X seconds to update note highlights
-    window.setInterval(set_timestamp_in_notes, 500);
+    player.addEventListener(Twitch.Player.READY, function() {
+        setTimeout(function() {
+            console.log("SEEKING");
+            player.seek(initial_time);
+            window.setInterval(set_timestamp_in_notes, 500);
+        }, 2000);
+    });
+
 }
 
 /**
@@ -76,7 +82,7 @@ function highlight_note(timestamp) {
  */
 function set_timestamp_in_notes() {
     let timestamp = player.getCurrentTime();
-    document.getElementById("video_timestamp").innerText = timestamp;
+    document.getElementById("video_timestamp").innerText = Math.floor(timestamp);
     highlight_note(timestamp);
 }
 
@@ -88,4 +94,15 @@ function goto_note(timestamp) {
     if(player !== undefined) {
         player.seek(timestamp);
     }
+}
+
+/**
+ * Copy timestamp to clipboard
+ */
+function copy_timestamp() {
+    let timestamp_el = document.getElementById("video_timestamp");
+    console.log(timestamp_el);
+    timestamp_el.select();
+
+    document.execCommand("copy");
 }

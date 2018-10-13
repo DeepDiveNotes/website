@@ -1,13 +1,16 @@
+pub mod search;
+
 use failure::Error;
+use std::cmp::Ord;
+use std::fs;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-use std::cmp::Ord;
-use std::fs;
 
 /// Load all seasons in a specified directory
 pub fn read_seasons_from_path(path: &str) -> Vec<Season> {
-    let mut seasons = walkdir::WalkDir::new(path).into_iter()
+    let mut seasons = walkdir::WalkDir::new(path)
+        .into_iter()
         .filter_map(|entry| entry.ok())
         .filter(|entry| entry.file_type().is_file())
         .filter_map(|entry| {
@@ -56,12 +59,12 @@ pub struct Episode {
     pub id: usize,
     pub title: String,
     pub twitch_video_id: String,
-    pub notes: Vec<Notes>
+    pub notes: Vec<Note>,
 }
 
 /// Individual note for an episode
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Notes {
+pub struct Note {
     pub description: String,
     pub timestamp: u64,
 }

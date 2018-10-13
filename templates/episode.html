@@ -17,10 +17,10 @@
   </ul>
  </div>
 
-<h2 id="video_timestamp">0</h2>
+<textarea id="video_timestamp" onclick="copy_timestamp()">0</textarea>
 
 <script type="text/javascript">
- ini_twitch_player("{{ episode.twitch_video_id }}");
+ ini_twitch_player("{{ episode.twitch_video_id }}", {{time}});
 </script>
 </body>
  </html>
