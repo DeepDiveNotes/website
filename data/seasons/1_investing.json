@@ -3,7 +3,7 @@
   "id": 1,
   "episodes": [
     {
-      "title": "Episode 1",
+      "title": "Episode 1 - Stock Market Investing Day 1",
       "id": 1,
       "twitch_video_id": "320446252",
       "notes": [
@@ -112,20 +112,95 @@
           "timestamp": 5029
         },
         {
-          "description":  "",
-          "timestamp": 0
+          "description":  "Share Class",
+          "timestamp": 5285
         },
         {
-          "description":  "",
-          "timestamp": 0
+          "description":  "If I was a manager, how do I liquidate?",
+          "timestamp": 5519
         },
         {
-          "description":  "",
-          "timestamp": 0
+          "description":  "What is a Mutual Fund?",
+          "timestamp": 5982
         },
         {
-          "description":  "",
-          "timestamp": 0
+          "description":  "Index Funds vs Mutual Funds",
+          "timestamp": 6442
+        },
+        {
+          "description":  "Top performing mutual funds",
+          "timestamp": 6550
+        },
+        {
+          "description":  "Back to share class / security",
+          "timestamp": 6728
+        },
+        {
+          "description":  "What we need to do next (exchanges / ThinkOrSwim - papermoney / )",
+          "timestamp": 6836
+        }
+      ]
+    },
+    {
+      "title": "Episode 2 - Stock Market Investing Day 2",
+      "id": 2,
+      "twitch_video_id": "320872711",
+      "notes": [
+        {
+          "description":  "What we did yesterday",
+          "timestamp": 3
+        },
+        {
+          "description":  "Types of stock: Common stock vs Preferred Stock",
+          "timestamp": 74
+        },
+        {
+          "description":  "Rule 144 stock",
+          "timestamp": 230
+        },
+        {
+          "description":  "Shareholders",
+          "timestamp": 316
+        },
+        {
+          "description":  "Exchanged Trading Fund",
+          "timestamp": 374
+        },
+        {
+          "description":  "Financing",
+          "timestamp": 491
+        },
+        {
+          "description":  "Stock Trading",
+          "timestamp": 553
+        },
+        {
+          "description":  "Stock traders are represented by stock brockers",
+          "timestamp": 614
+        },
+        {
+          "description":  "OTC - Over-The-Counter",
+          "timestamp": 744
+        },
+        {
+          "description":  "Stock Exchange / Securities Exchange / Bourse",
+          "timestamp": 925
+        },
+        {
+          "description":  "Roles of Stock Exchanges",
+          "timestamp": 1104
+        },
+        {
+          "description":  "Corporate Governance",
+          "timestamp": 1219
+        },
+        {
+          "description":  "Listing Requirements",
+          "timestamp": 1333
+        },
+        {
+          "description":  "New York stock exchange",
+          "timestamp": 1445
         }
       ]
     }
