@@ -22,8 +22,10 @@ function ini_twitch_player(video_id, initial_time) {
     // Once the player is set, we want to refresh the timestamp every X seconds to update note highlights
     player.addEventListener(Twitch.Player.READY, function() {
         player.removeEventListener(Twitch.Player.READY, this);
+
+        // For some reason, the player isn't actually ready when twitch sends the event, so we need to wait a bit before seeking
+        // Their has to be a more reliable way of doing this.
         setTimeout(function() {
-            console.log("SEEKING");
             if(initial_time >= 0) {
                 player.seek(initial_time);
             }
@@ -47,6 +49,8 @@ function highlight_note(timestamp) {
     let initial_current_note = current_note;
 
     let current_note_timestamp = current_note.getAttribute("data_timestamp");
+
+    // The bellow code essentially scrolls through the notes until it finds the one matching the timestamp.
 
     if(timestamp > current_note_timestamp) { // We want to highlight a note further than the current one
         let next_note = notes.children[current_note_index+1];

@@ -19,6 +19,12 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
+/**
+ * Search for current search text.
+ * Constructs the html in-code.
+ *
+ * NOTE: This would be heavily improved by using something like react.
+ */
 function search() {
     let search_text = document.getElementById("search_text");
 
