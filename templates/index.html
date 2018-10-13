@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Seasons:
+    <ul>
+        {% for season in seasons %}
+        <li><a href="/season/{{ season.id }}">{{ season.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

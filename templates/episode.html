@@ -1,0 +1,26 @@
+ <html>
+ <head>
+  <title>{{ episode.title }}</title>
+  <link href="/static/styles/episode.css" rel="stylesheet" type="text/css"/>
+  <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+  <script src="/static/scripts/episode.js"></script>
+ </head>
+<body>
+<div id="<player div ID>"></div>
+
+
+<div id="notes">
+  <ul>
+   {% for note in episode.notes %}
+   <li class="note" data_timestamp={{ note.timestamp }} onclick="goto_note({{ note.timestamp }})"><b>{{ note.timestamp }}</b> - {{ note.description }}</li>
+   {% endfor %}
+  </ul>
+ </div>
+
+<h2 id="video_timestamp">0</h2>
+
+<script type="text/javascript">
+ ini_twitch_player("{{ episode.twitch_video_id }}");
+</script>
+</body>
+ </html>

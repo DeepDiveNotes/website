@@ -1,0 +1,82 @@
+{
+  "title":  "1. Investing",
+  "id": 1,
+  "episodes": [
+    {
+      "title": "Episode 1",
+      "id": 1,
+      "twitch_video_id": "320446252",
+      "notes": [
+        {
+          "description":  "Disclamer / Bot command",
+          "timestamp": 1 
+        },
+        {
+          "description":  "Intro / Goals",
+          "timestamp": 350
+        },
+        {
+          "description":  "Explains crypto bot using astronomy paper",
+          "timestamp": 510
+        },
+        {
+          "description":  "Can you purchase half a stock?",
+          "timestamp": 680 
+        },
+        {
+          "description":  "What is investing?",
+          "timestamp": 1307
+        },
+        {
+          "description":  "What is a stock?",
+          "timestamp": 1365
+        },
+        {
+          "description":  "Wikipedia - Stock",
+          "timestamp": 1470
+        },
+        {
+          "description":  "Shares vs Stock. Are they the same?",
+          "timestamp": 1535
+        },
+        {
+          "description":  "example 1 - Company formation - self issuing shares",
+          "timestamp": 1683
+        },
+        {
+          "description":  "example 1 - Dividing up shares between partners",
+          "timestamp": 1874 
+        },
+        {
+          "description":  "example 1 - Investment from twitch chat",
+          "timestamp": 1934
+        },
+        {
+          "description":  "example 1 - How can twitch chat get a return on investment?",
+          "timestamp": 2044
+        },
+        {
+          "description":  "example 1 - Profit Dividends - Split up profits",
+          "timestamp": 2079
+        },
+        {
+          "description":  "example 1 - Company Ascquired - Split up money made from selling",
+          "timestamp": 2225
+        },
+        {
+          "description":  "example 1 - IPO - Initial Public Offering - Going public / Sell stocks on public market",
+          "timestamp": 2493
+        },
+        {
+          "description":  "IPO - Advantages / Disadvantages of going public",
+          "timestamp": 2625
+        },
+        {
+          "description":  "IPO - Advantages",
+          "timestamp": 2680
+        }
+
+      ]
+    }
+  ]
+}
