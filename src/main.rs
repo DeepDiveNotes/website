@@ -124,13 +124,13 @@ fn episode(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error> {
         if let Some(episode) = season.episodes.get(episode_id - 1) {
 
             let initial_time = if let Some(time) = req.query().get("t") {
-                if let Ok(time) = time.parse::<u32>() {
+                if let Ok(time) = time.parse::<i32>() {
                     time
                 } else {
-                    0
+                    -1
                 }
             } else {
-                0
+                -1
             };
 
 

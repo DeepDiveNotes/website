@@ -23,7 +23,9 @@ function ini_twitch_player(video_id, initial_time) {
     player.addEventListener(Twitch.Player.READY, function() {
         setTimeout(function() {
             console.log("SEEKING");
-            player.seek(initial_time);
+            if(initial_time >= 0) {
+                player.seek(initial_time);
+            }
             window.setInterval(set_timestamp_in_notes, 500);
         }, 2000);
     });
