@@ -13,7 +13,7 @@ function getJson(url, callback) {
     xhr.send();
 }
 
-let last_query = "";
+let last_query = undefined;
 
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -95,7 +95,6 @@ function search() {
                     note_result.appendChild(note_link);
                 }
             }
-
         }
 
         results_node.innerHTML = "";
@@ -103,12 +102,11 @@ function search() {
     });
 }
 
-
 window.onload = function() {
     let search_text = document.getElementById("search_text");
     document.getElementById("search_text").addEventListener("input", search)
     if(window.location.hash) {
         search_text.value = window.location.hash.substring(1);
-        search();
     }
+    search();
 };
