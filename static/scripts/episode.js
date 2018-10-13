@@ -21,15 +21,15 @@ function ini_twitch_player(video_id, initial_time) {
 
     // Once the player is set, we want to refresh the timestamp every X seconds to update note highlights
     player.addEventListener(Twitch.Player.READY, function() {
+        player.removeEventListener(Twitch.Player.READY, this);
         setTimeout(function() {
             console.log("SEEKING");
             if(initial_time >= 0) {
                 player.seek(initial_time);
             }
             window.setInterval(set_timestamp_in_notes, 500);
-        }, 2000);
+        }, 2500);
     });
-
 }
 
 /**
