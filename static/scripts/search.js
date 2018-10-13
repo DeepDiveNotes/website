@@ -15,10 +15,15 @@ function getJson(url, callback) {
 
 let last_query = "";
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 function search() {
     let search_text = document.getElementById("search_text");
 
-    let query = search_text.value;
+    let query = escapeRegExp(search_text.value);
+    console.log(query);
 
     if(last_query === query){
         return;
@@ -28,7 +33,7 @@ function search() {
 
     window.location.hash = query;
 
-    getJson("/search/json?q="+query, function(status, result) {
+    getJson("/search/json?q="+encodeURIComponent(query), function(status, result) {
         if(status !== null) {
             console.log("Could not search, status code: "+status + " - " + result);
             return;

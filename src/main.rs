@@ -166,7 +166,7 @@ fn search(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error> {
     let state = req.state();
 
     let results = if let Some(query) = req.query().get("q") {
-        let regex = regex::RegexBuilder::new(query).case_insensitive(true).build().map_err(|err| error::ErrorInternalServerError(format!("regex error {:?}", err)))?;
+        let regex = regex::RegexBuilder::new(&regex::escape(query.trim())).case_insensitive(true).build().map_err(|err| error::ErrorInternalServerError(format!("regex error {:?}", err)))?;
 
         state.seasons.search(&regex).unwrap()
 
@@ -188,7 +188,7 @@ fn search_json(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error
     let state = req.state();
 
     let results = if let Some(query) = req.query().get("q") {
-        let regex = regex::RegexBuilder::new(query).case_insensitive(true).build().map_err(|err| error::ErrorInternalServerError(format!("regex error {:?}", err)))?;
+        let regex = regex::RegexBuilder::new(&regex::escape(query.trim())).case_insensitive(true).build().map_err(|err| error::ErrorInternalServerError(format!("regex error {:?}", err)))?;
 
         state.seasons.search(&regex).unwrap()
 
