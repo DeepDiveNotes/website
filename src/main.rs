@@ -52,7 +52,7 @@ fn main() -> Result<(), Error> {
                 fs::StaticFiles::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static")).unwrap(),
             )
             .finish()
-    }).bind("127.0.0.1:80")
+    }).bind("0.0.0.0:80")
         .unwrap()
         .run();
 
