@@ -201,6 +201,114 @@
         {
           "description":  "New York stock exchange",
           "timestamp": 1445
+        },
+        {
+          "description":  "What is an exchange? Summary",
+          "timestamp": 1917
+        },
+        {
+          "description":  "Stock Market Index",
+          "timestamp": 1968
+        },
+        {
+          "description":  "Stock Market Index - Types of Indices",
+          "timestamp": 2038
+        },
+        {
+          "description":  "Index - Weighting",
+          "timestamp": 2565
+        },
+        {
+          "description":  "Capitalization-weighted index",
+          "timestamp": 2791
+        },
+        {
+          "description":  "Dow Jones Industrial Average",
+          "timestamp": 2847
+        },
+        {
+          "description":  "Dow Jones Calculation - Dow Divisor",
+          "timestamp": 3115
+        },
+        {
+          "description":  "S&P 500 Index",
+          "timestamp": 3366
+        },
+        {
+          "description":  "S&P 500 Companies",
+          "timestamp": 3868
+        },
+        {
+          "description":  "Dr Pepper was bought by Keurig?",
+          "timestamp": 3971
+        },
+        {
+          "description":  "Twitter replaced Monsanto on the S&P - talking about how fcked Monsanto is",
+          "timestamp": 4269
+        },
+        {
+          "description":  "Back to S&P",
+          "timestamp": 4526
+        },
+        {
+          "description":  "S&P Index Maintenance",
+          "timestamp": 4568
+        },
+        {
+          "description":  "Index Fund Investing",
+          "timestamp": 4650
+        },
+        {
+          "description":  "Mutual Funds vs ETF - exchange-traded fund",
+          "timestamp": 4748
+        },
+        {
+          "description":  "ETF - Who offers them?",
+          "timestamp": 4893
+        },
+        {
+          "description":  "Russel 1000 Index",
+          "timestamp": 5002
+        },
+        {
+          "description":  "Deep Dive Meta Talk - Adding to the doc / explaining",
+          "timestamp": 5473
+        },
+        {
+          "description":  "Buying Stocks",
+          "timestamp": 5753
+        },
+        {
+          "description":  "Buying Stocks on Margin",
+          "timestamp": 5999
+        },
+        {
+          "description":  "example - Tesla Stock on margin w/ Amazon collateral",
+          "timestamp": 6057
+        },
+        {
+          "description":  "example - What if the value goes down?",
+          "timestamp": 6254
+        },
+        {
+          "description":  "Selling Stocks",
+          "timestamp": 6509
+        },
+        {
+          "description":  "Short Selling",
+          "timestamp": 6610
+        },
+        {
+          "description":  "example - harkdan lends sevadus shares in coca-cola - Doesn't actually finish the example",
+          "timestamp": 6728
+        },
+        {
+          "description":  "If the price goes up, they make the money you lose. How? Why do you have to give it back?",
+          "timestamp": 6861
+        },
+        {
+          "description":  "End talk: Summary - What we need to talk about",
+          "timestamp": 6962
         }
       ]
     }
