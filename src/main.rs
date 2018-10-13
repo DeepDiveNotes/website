@@ -12,17 +12,22 @@ use actix_web::{
 use failure::Error;
 use std::collections::HashMap;
 use tera::Template;
+use std::sync::RwLock;
+use std::sync::Arc;
+use std::thread;
+use std::sync::mpsc::channel;
+use std::time::Duration;
 
 /// AppState
 ///
 /// Store persistent data
 struct AppState {
     template: tera::Tera,
-    seasons: Vec<deep_dive::Season>,
+    seasons: Arc<RwLock<Vec<deep_dive::Season>>>,
 }
 
 impl AppState {
-    pub fn new(seasons: Vec<deep_dive::Season>) -> Self {
+    pub fn new(seasons: Arc<RwLock<Vec<deep_dive::Season>>>) -> Self {
         Self {
             template: compile_templates!(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")),
             seasons,
@@ -35,7 +40,36 @@ fn main() -> Result<(), Error> {
     env_logger::init();
 
     let seasons =
-        deep_dive::read_seasons_from_path(concat!(env!("CARGO_MANIFEST_DIR"), "/data/seasons"));
+        Arc::new(RwLock::new(deep_dive::read_seasons_from_path(concat!(env!("CARGO_MANIFEST_DIR"), "/data/seasons"))));
+
+    let seasons_2 = seasons.clone();
+    thread::spawn(move || {
+        let seasons = seasons_2;
+        use notify::{RecommendedWatcher, Watcher, RecursiveMode};
+
+        let (tx, rx) = channel();
+
+        let mut watcher: RecommendedWatcher = Watcher::new(tx,Duration::from_secs(2)).unwrap();
+
+        watcher.watch(concat!(env!("CARGO_MANIFEST_DIR"), "/data/seasons"), RecursiveMode::Recursive).unwrap();
+
+        loop {
+            match rx.recv() {
+                Ok(event) => {
+                    println!("Reloading seasons!");
+
+                    let mut season_write = seasons.write().unwrap();
+
+                    *season_write = deep_dive::read_seasons_from_path(concat!(env!("CARGO_MANIFEST_DIR"), "/data/seasons"));
+
+                    println!("Reloading complete!");
+                }
+                Err(e) => {
+                    println!("Watch error: {:?}", e)
+                }
+            }
+        }
+    });
 
     server::new(move || {
         let state = AppState::new(seasons.clone());
@@ -64,11 +98,12 @@ fn main() -> Result<(), Error> {
 fn index(
     (state, _query): (State<AppState>, Query<HashMap<String, String>>),
 ) -> Result<HttpResponse, error::Error> {
-    let seasons = &state.seasons;
+    let seasons = &state.seasons.read().unwrap();
     let templates = &state.template;
 
     let mut ctx = tera::Context::new();
-    ctx.insert("seasons", seasons);
+
+    ctx.insert("seasons", &**seasons);
 
     let body = templates
         .render("index.html", &ctx)
@@ -86,7 +121,7 @@ fn season(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error> {
     })?;
     let id = id - 1; // Front end id's start at 1, but since we use a vector to access, we need to start at 0
 
-    if let Some(season) = state.seasons.get(id) {
+    if let Some(season) = state.seasons.read().unwrap().get(id) {
         let mut ctx = tera::Context::new();
         ctx.insert("season", season);
 
@@ -121,7 +156,9 @@ fn episode(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error> {
         .parse()
         .map_err(|err| error::ErrorBadRequest(format!("Could not parse episode id {:?}", err)))?;
 
-    if let Some(season) = state.seasons.get(season_id - 1) {
+    let seasons = state.seasons.read().unwrap();
+
+    if let Some(season) = seasons.get(season_id - 1) {
         if let Some(episode) = season.episodes.get(episode_id - 1) {
 
             let initial_time = if let Some(time) = req.query().get("t") {
@@ -165,17 +202,7 @@ fn search(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error> {
 
     let state = req.state();
 
-    let results = if let Some(query) = req.query().get("q") {
-        let regex = regex::RegexBuilder::new(&regex::escape(query.trim())).case_insensitive(true).build().map_err(|err| error::ErrorInternalServerError(format!("regex error {:?}", err)))?;
-
-        state.seasons.search(&regex).unwrap()
-
-    } else {
-        Vec::new()
-    };
-
     let mut ctx = tera::Context::new();
-    ctx.insert("results", &results);
 
     let body = state.template.render("search_result.html", &ctx).map_err(|err| error::ErrorInternalServerError(format!("{:?}", err)))?;
 
@@ -190,7 +217,10 @@ fn search_json(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error
     let results = if let Some(query) = req.query().get("q") {
         let regex = regex::RegexBuilder::new(&regex::escape(query.trim())).case_insensitive(true).build().map_err(|err| error::ErrorInternalServerError(format!("regex error {:?}", err)))?;
 
-        state.seasons.search(&regex).unwrap()
+        {
+            let seasons = state.seasons.read().unwrap();
+            seasons.search(&regex).unwrap()
+        }
 
     } else {
         Vec::new()
