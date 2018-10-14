@@ -12,6 +12,7 @@ ul {
 }
 a {
     color: white;
+    text-decoration: none;
 }
 h1 {
     margin: 0;
@@ -54,12 +55,22 @@ h1 {
     background-color: #424248;
 }
 
+#notes li:nth-child(even):hover {
+    background-color: #7b7b7b;
+}
+
 #notes li:nth-child(odd) {
     background-color: #161515;
 }
 
+#notes li:nth-child(odd):hover {
+    background-color: #7b7b7b;
+}
+
 .note {
     padding: 5px;
+    width:100%;
+    cursor: pointer;
 }
 
 .highlight {
@@ -72,4 +83,12 @@ h1 {
     left: 0;
     top: 0;
     font-size: 30px
+}
+
+#search_results_container {
+    color: white;
+}
+
+.timestamp {
+    text-decoration: underline;
 }

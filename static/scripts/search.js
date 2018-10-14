@@ -1,118 +1,129 @@
-function getJson(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'json';
-    xhr.onload = function() {
-        var status = xhr.status;
-        if (status === 200) {
-            callback(null, xhr.response);
-        } else {
-            callback(status, xhr.response);
-        }
-    };
-    xhr.send();
-}
+Number.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
-let last_query = undefined;
-
-function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
-/**
- * Search for current search text.
- * Constructs the html in-code.
- *
- * NOTE: This would be heavily improved by using something like react.
- */
-function search() {
-    let search_text = document.getElementById("search_text");
-
-    let query = escapeRegExp(search_text.value);
-    console.log(query);
-
-    if(last_query === query){
-        return;
-    }
-
-    last_query = query;
-
-    window.location.hash = query;
-
-    getJson("/search/json?q="+encodeURIComponent(query), function(status, result) {
-        if(status !== null) {
-            console.log("Could not search, status code: "+status + " - " + result);
-            return;
-        }
-
-        let reg_query = new RegExp(last_query, "ig");
-
-        let results_node = document.getElementById("results");
-
-        let seasons_list = document.createElement("ul");
-        seasons_list.id = "seasons";
-
-        for(let season_index in result) {
-            let season = result[season_index];
-
-            let season_results_node = document.createElement("li");
-            season_results_node.className = "season";
-            seasons_list.appendChild(season_results_node);
-
-            // Season title
-            let season_title_node = document.createElement("h1");
-            season_title_node.innerText = season.title;
-            season_results_node.appendChild(season_title_node);
-
-            // Episodes
-            let episodes_list = document.createElement("ul");
-            episodes_list.id = "episodes";
-            season_results_node.appendChild(episodes_list);
-
-            for(let episode_index in season.episode_results) {
-                let episode = season.episode_results[episode_index];
-
-                let episode_results_node = document.createElement("li");
-                episode_results_node.className = "episode";
-                episodes_list.appendChild(episode_results_node);
-
-                // Episode title
-                let episode_title = document.createElement("h3");
-                episode_title.innerText = episode.title;
-                episode_results_node.appendChild(episode_title);
-
-                let note_list = document.createElement("ul");
-                note_list.id = "notes";
-                episode_results_node.appendChild(note_list);
-
-                for(let note_index in episode.note_results) {
-                    let note = episode.note_results[note_index];
-
-                    let note_result = document.createElement("li");
-                    note_result.className = "note";
-                    note_list.appendChild(note_result);
-
-                    let note_link = document.createElement("a");
-                    note_link.href = "/season/"+season.id+"/episode/"+episode.id+"?t="+note.timestamp;
-
-                    let description = note.description.replace(reg_query, "<span class='highlight'>"+query+"</span>");
-
-                    note_link.innerHTML = description;
-                    note_result.appendChild(note_link);
-                }
-            }
-        }
-
-        results_node.innerHTML = "";
-        results_node.appendChild(seasons_list);
-    });
-}
-
-window.onload = function() {
-    let search_text = document.getElementById("search_text");
-    document.getElementById("search_text").addEventListener("input", search)
-    if(window.location.hash) {
-        search_text.value = window.location.hash.substring(1);
-    }
-    search();
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
 };
+
+const search_text = document.getElementById("search_text");
+
+const e = React.createElement;
+
+class SearchResults extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.search = this.search.bind(this);
+        this.query = this.query.bind(this);
+
+        this.state = {
+            results: null,
+            query: this.query(search_text.value)
+        };
+
+        search_text.addEventListener("input", this.search);
+    }
+
+    search() {
+        fetch("/search/json?q="+search_text.value)
+            .then(response => response.json())
+            .then(results => {
+                this.setState({
+                    results,
+                    query: this.query(search_text.value)
+                })
+            });
+    }
+
+    query(value) {
+        if(value.length > 0) {
+            return new RegExp('('+value+')', "ig");
+        }
+
+        return null;
+    }
+
+    componentDidMount() {
+        this.search();
+    }
+
+
+    render() {
+        if(this.state.results != null){
+            return (
+                <SeasonList query = {this.state.query} seasons={this.state.results} />
+            );
+        } else {
+            return (
+                <div>LOADING</div>
+            )
+        }
+    }
+}
+
+class SeasonList extends React.Component {
+    render() {
+        let seasons = this.props.seasons.map(season => {
+            return (
+                <li class="season">
+                    <h1>{season.title}</h1>
+                    <EpisodeList query={this.props.query} season_id={season.id} episodes={season.episode_results}/>
+                </li>
+            );
+        });
+
+        return (
+            <ul id="seasons">{seasons}</ul>
+        );
+    }
+}
+
+class EpisodeList extends React.Component {
+    render() {
+        let episodes = this.props.episodes.map(episode => {
+            return(<li class="episode">
+                <h2>{episode.title}</h2>
+                <NoteList query = {this.props.query} season_id={this.props.season_id} episode_id={episode.id} notes={episode.note_results}/>
+            </li>);
+        });
+
+        return(<ul id="episodes">{episodes}</ul>)
+    }
+}
+
+class NoteList extends React.Component {
+    render() {
+        let notes = this.props.notes.map(note => {
+
+            let description = note.description;
+
+            if(this.props.query !== null) {
+                description = description.replace(this.props.query, "<span class='highlight'>$1</span>")
+            }
+
+            return(<li class="note">
+                <a href={"/season/"+this.props.season_id + "/episode/"+this.props.episode_id+"?t="+note.timestamp}><span class="timestamp">{note.timestamp.toHHMMSS()}</span> - <span dangerouslySetInnerHTML={{__html: description}} /></a>
+            </li>)
+        });
+
+        return(<ul id="notes">{notes}</ul>);
+    }
+}
+
+if(window.location.hash) {
+    search_text.value = window.location.hash.substring(1);
+}
+
+const results_container = document.querySelector("#search_results_container");
+ReactDOM.render(e(SearchResults), results_container);
+
+
+
+
+
+

@@ -228,5 +228,5 @@ fn search_json(req: &HttpRequest<AppState>) -> Result<HttpResponse, error::Error
 
     let results_json = serde_json::to_string(&results).map_err(|err| error::ErrorInternalServerError(format!("Could not serialize search results to json: {:?}", err)))?;
 
-    Ok(HttpResponse::Ok().content_type("text/json").body(results_json))
+    Ok(HttpResponse::Ok().content_type("application/json").body(results_json))
 }
