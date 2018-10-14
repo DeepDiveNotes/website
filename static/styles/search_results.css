@@ -68,9 +68,13 @@ h1 {
 }
 
 .note {
-    padding: 5px;
     width:100%;
     cursor: pointer;
+}
+
+.note a {
+    padding:5px;
+    display: block;
 }
 
 .highlight {
