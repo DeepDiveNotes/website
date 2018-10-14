@@ -22,6 +22,8 @@ h1 {
 #search_bar {
     width: 100%;
     text-align: center;
+    box-shadow: 1px 1px gray;
+    margin-bottom: 1px;
 }
 
 #search_text {
