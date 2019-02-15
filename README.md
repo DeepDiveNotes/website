@@ -1,7 +1,7 @@
 Simple website to browse notes / watch deep dive episodes.
 
 
-Feel free to make pull requests for notes / functionality
+Feel free to make pull requests for notes on videos
 
 ## How to contribute timestamps / notes
 
